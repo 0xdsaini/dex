@@ -13,8 +13,13 @@ class listLocals(object):
 
     def __init__(self, path):
 
-        # path to directory
-        self.path = path
+        # if path to directory
+        if isdir(path):
+            self.path = path
+
+        # else raise error
+        else:
+            raise ValueError
 
     def fileType(self, filename):
 
