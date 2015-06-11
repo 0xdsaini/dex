@@ -81,7 +81,7 @@ def lsdir(path):
     """Instantiate listLocals to return contents of a directory(at location
     `path` as a dictionary) in a organized fashion.
 
-    See docstring -> listLocals.lsdir method for more.
+    See docstring -> listLocals.lsdir method for more on return value.
     """
 
     return listLocals(path).lsdir()
