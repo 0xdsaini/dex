@@ -13,7 +13,7 @@ class listLocals(object):
 
     def __init__(self, path):
 
-        # local path
+        # path to directory
         self.path = path
 
     def fileType(self, filename):
