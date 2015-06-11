@@ -29,27 +29,27 @@ class listLocals(object):
 
             filepath = join(self.path, filename)
 
-            if func(filepath) :
-                return TYPES[func] 
-        
+            if func(filepath):
+                return TYPES[func]
+
         # If file is of type not listed in TYPES
         return "other"
-
 
     def split_file_types(self, contentList):
 
         """contentList -> A single list containing directories, files, links and
         mount points and other types of files.
 
-        return a Dict containing key:value pairs where keys are : "dir", "file",
-        "link", "mountpoint" and "other".
+        return a Dict containing key:value pairs where keys are : "dir",
+        "file", "link", "mountpoint" and "other".
 
         Each key corresponds to a list of items with same file type and "other"
         contains a list of unsupported file types."""
 
         # Dictionary containing names of different content on its own list.
         # Supported keys are "file", "dir", "link", "mountpoint", "others".
-        contentDict = {"file": [], "dir": [], "link": [], "mountpoint": [], "other": []}
+        contentDict = {"file": [], "dir": [], "link": [], "mountpoint": [],
+                       "other": []}
 
         for filename in contentList:
 
@@ -58,14 +58,13 @@ class listLocals(object):
 
         return contentDict
 
-
     def lsdir(self, path=None):
 
         """Return a Dict containing items in given `path` as key:value pairs where
         keys are : "dir", "file", "link", "mountpoint" and "other".
 
-        And each key corresponds to a list of files with same file type and "other"
-        contains a list of unsupported file types.
+        And each key corresponds to a list of files with same file type and
+        "other" contains a list of unsupported file types.
         """
 
         # If new path is given
