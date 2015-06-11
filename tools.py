@@ -8,7 +8,7 @@ TYPES = {isfile: "file", isdir: "dir", islink: "link", ismount: "mountpoint"}
 
 class listLocals(object):
 
-    """Class for listing directories
+    """Class to list contents of directory in a organized fashion.
     """
 
     def __init__(self, path):
@@ -78,8 +78,10 @@ class listLocals(object):
 
 def lsdir(path):
 
-    """Return a dictionary containing files of different types in their own
-    lists.
+    """Instantiate listLocals to return contents of a directory(at location
+    `path` as a dictionary) in a organized fashion.
+
+    See docstring -> listLocals.lsdir method for more.
     """
 
     return listLocals(path).lsdir()
