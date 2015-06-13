@@ -54,8 +54,7 @@ class listLocals(object):
 
         # Dictionary containing names of different content on its own list.
         # Supported keys are "file", "dir", "link", "mountpoint", "others".
-        contentDict = {"file": [], "dir": [], "link": [], "mountpoint": [],
-                       "other": []}
+        contentDict = {v: [] for v in TYPES.values() + ['other']}
 
         for filename in contentList:
 
