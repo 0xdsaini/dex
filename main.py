@@ -1,4 +1,8 @@
 from curses import initscr, wrapper
+from curses import KEY_UP, KEY_DOWN # imports action keys
+
+# alias of each supported *action key*
+KEYS = {"quit": "q", "enter": '\n', "up": KEY_UP, "down": KEY_DOWN}
 
 
 def config(stdscr):
@@ -23,8 +27,29 @@ def main(stdscr):
     # Configure standard screen.
     stdscr = config(stdscr)
 
-    # Wait for user input.
-    stdscr.getch()
+    # default keyboard input
+    stdscr_key = None
+
+    # Main loop. Quits when keyboard input is 'q'
+    while stdscr_key is not ord(KEYS['quit']):
+
+        # Get input from keyboard.
+        stdscr_key = stdscr.getch()
+
+        # Enter/Return key pressed
+        if stdscr_key == KEYS['enter']:
+            pass # TODO
+
+        # Arrow Up key pressed
+        elif stdscr_key == KEYS['up']:
+            pass # TODO
+
+        # Arrow Down key pressed
+        elif stdscr_key == KEYS['down']:
+            pass # TODO
+
+        # Wait for 100 ms
+        stdscr.timeout(100)
 
 
 if __name__ == "__main__":
