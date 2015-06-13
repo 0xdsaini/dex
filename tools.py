@@ -52,8 +52,11 @@ class listLocals(object):
         Each key corresponds to a list of items with same file type and "other"
         contains a list of unsupported file types."""
 
-        # Dictionary containing names of different content on its own list.
-        # Supported keys are "file", "dir", "link", "mountpoint", "others".
+        # Dictionary containing different filetypes as keys and all
+        # filenames of corresponding filetype in that filetype(as a key)'s
+        # corresponding list.
+        # Supported keys are 'other' and all values from TYPES.
+        # each value initialized to empty list i.e. []
         contentDict = {v: [] for v in TYPES.values() + ['other']}
 
         for filename in contentList:
