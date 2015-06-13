@@ -3,6 +3,7 @@ from os.path import join
 from os import listdir
 
 
+# Supported filetypes functions and their identifier strings.
 TYPES = {isfile: "file", isdir: "dir", islink: "link", ismount: "mountpoint"}
 
 
