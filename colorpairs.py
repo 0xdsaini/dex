@@ -1,6 +1,7 @@
-from imports import *
-
 """module defines curses color pairs to be used by the importer program"""
+
+import curses
+
 
 try:
 
