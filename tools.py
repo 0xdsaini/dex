@@ -83,7 +83,7 @@ class listLocals(object):
         return self.split_file_types(listdir(self.path))
 
 
-def lsdir(path):
+def lsdir(path, extraPaths=False):
 
     """Instantiate listLocals to return contents of a directory(at location
     `path` as a dictionary) in a organized fashion.
@@ -91,4 +91,9 @@ def lsdir(path):
     See docstring -> listLocals.lsdir method for more on return value.
     """
 
-    return listLocals(path).lsdir()
+    contents = listLocals(path).lsdir()
+
+    if extraPaths:
+        contents['dir'].extend(['.', '..'])
+
+    return contents
