@@ -102,6 +102,26 @@ class Browser(object):
             # Render currElement
             self.stdscr.addstr(curr_line, 0, currElement, properties)
 
+    def setContents(self, contents):
+
+        """set contents' list.
+        Primarily developed to change contents' list"""
+
+        # change contents list
+        self.contents = contents
+
+        # Restore to defaults.
+        self.selectIndex = 0        
+
+        # renders it
+        self._print_elements_()
+
+    def getSelected(self):
+
+        """Return selected content"""
+
+        return self.contents[self.selectIndex]
+
     def Move(self, moveSteps):
 
         """Move selection by `moveSteps`.
