@@ -1,23 +1,4 @@
 from curses import initscr, wrapper
-from curses import KEY_UP, KEY_DOWN # imports action keys
-
-# alias of each supported *action key*
-KEYS = {"quit": "q", "enter": '\n', "up": KEY_UP, "down": KEY_DOWN}
-
-
-def config(stdscr):
-
-    """Standard screen configuration.
-    Return configured screen."""
-
-    # Enable use of KEY_UP, KEY_DOWN etc.
-    stdscr.keypad(True)
-
-    # Set background color
-    stdscr.bkgd(" ", curses.color_pair(1))
-
-    # Return configured standard screen
-    return stdscr
 
 
 def main(stdscr):
@@ -29,6 +10,33 @@ def main(stdscr):
 
     # default keyboard input
     stdscr_key = None
+
+    # Dictionary containing sorted list directory contents in some fashion.
+    # See -> lsdir's docstring.
+    dirContents = tools.lsdir('.')
+
+    # contains those dirs whose filetype is considered as 'dir' by DIRS
+    dirs = [Content(fname, 'dir') for _type in DIRS for fname in dirContents[_type]]
+    # contains those files whose filetype is considered as 'file' by FILES
+    files = [Content(fname, 'file') for _type in FILES for fname in dirContents[_type]]
+
+    # Single list containing dirs and files classes combined.
+    elementsAll = []
+
+    dirs = sorted(dirs, key=lambda x: x.name)
+    files = sorted(files, key=lambda x: x.name)
+
+    # Append Content objects in the order defined in PRINT_ORDER constant.
+    for type in PRINT_ORDER:
+
+        # Requires `dirs` and `files` lists to be existed.
+        for item in locals()[type+'s']:
+
+            # Append Content-object.
+            elementsAll.append(item)
+
+    ### TEMPORARY ###
+    browser = Browser(stdscr, elementsAll)
 
     # Main loop. Quits when keyboard input is 'q'
     while stdscr_key is not ord(KEYS['quit']):
@@ -42,13 +50,16 @@ def main(stdscr):
 
         # Arrow Up key pressed
         elif stdscr_key == KEYS['up']:
-            pass # TODO
+            # Move selection to previous element
+            browser.Move(-1)
 
         # Arrow Down key pressed
         elif stdscr_key == KEYS['down']:
-            pass # TODO
+            # Move selection to next element.
+            browser.Move(1)
 
         # Wait for 100 ms
+        # TODO -> increase to decrease CPU cycles.
         stdscr.timeout(100)
 
 
@@ -59,6 +70,9 @@ if __name__ == "__main__":
 
     # import configured `curses` module and other configurations.
     from config import *
+
+    # import all required modules
+    from imports import *
 
     # call `main` and wait till it exits.
     wrapper(main)
