@@ -5,7 +5,7 @@ def getContents(path):
 
     # Dictionary containing sorted list directory contents in some fashion.
     # See -> lsdir's docstring.
-    dirContents = tools.lsdir(path)
+    dirContents = tools.lsdir(path, True)
 
     # contains those dirs whose filetype is considered as 'dir' by DIRS
     dirs = [Content(fname, 'dir') for _type in DIRS for fname in dirContents[_type]]
@@ -41,8 +41,11 @@ def main(stdscr):
     # default keyboard input
     stdscr_key = None
 
+    # Path tracker : track every navigation from path to path
+    pathHistory = [abspath('/')]
+
     # Get all contents
-    contentsAll = getContents('/')
+    contentsAll = getContents(pathHistory[-1])
 
     ### TEMPORARY ###
     browser = Browser(stdscr, contentsAll)
@@ -54,8 +57,25 @@ def main(stdscr):
         stdscr_key = stdscr.getch()
 
         # Enter/Return key pressed
-        if stdscr_key == KEYS['enter']:
-            pass # TODO
+        if stdscr_key == ord(KEYS['enter']):
+
+            # Get selected Content from browser
+            selected_content = browser.getSelected()
+
+            # If it is a directory
+            if selected_content.type == 'dir':
+
+                # Gets new path
+                newPath = join(abspath(pathHistory[-1]), selected_content.name)
+
+                # Get new list of Contents
+                contentsAll = getContents(newPath)
+
+                # Set new contents
+                browser.setContents(contentsAll)
+
+                # Append new path to pathHistory
+                pathHistory.append(newPath)
 
         # Arrow Up key pressed
         elif stdscr_key == KEYS['up']:
