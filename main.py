@@ -1,19 +1,11 @@
 from curses import initscr, wrapper
 
 
-def main(stdscr):
-
-    """Contains curses main loop"""
-
-    # Configure standard screen.
-    stdscr = config(stdscr)
-
-    # default keyboard input
-    stdscr_key = None
+def getContents(path):
 
     # Dictionary containing sorted list directory contents in some fashion.
     # See -> lsdir's docstring.
-    dirContents = tools.lsdir('.')
+    dirContents = tools.lsdir(path)
 
     # contains those dirs whose filetype is considered as 'dir' by DIRS
     dirs = [Content(fname, 'dir') for _type in DIRS for fname in dirContents[_type]]
@@ -21,7 +13,7 @@ def main(stdscr):
     files = [Content(fname, 'file') for _type in FILES for fname in dirContents[_type]]
 
     # Single list containing dirs and files classes combined.
-    elementsAll = []
+    contentsAll = []
 
     dirs = sorted(dirs, key=lambda x: x.name)
     files = sorted(files, key=lambda x: x.name)
@@ -33,10 +25,27 @@ def main(stdscr):
         for item in locals()[type+'s']:
 
             # Append Content-object.
-            elementsAll.append(item)
+            contentsAll.append(item)
+
+    # Return all contents
+    return contentsAll
+
+
+def main(stdscr):
+
+    """Contains curses main loop"""
+
+    # Configure standard screen.
+    stdscr = config(stdscr)
+
+    # default keyboard input
+    stdscr_key = None
+
+    # Get all contents
+    contentsAll = getContents('/')
 
     ### TEMPORARY ###
-    browser = Browser(stdscr, elementsAll)
+    browser = Browser(stdscr, contentsAll)
 
     # Main loop. Quits when keyboard input is 'q'
     while stdscr_key is not ord(KEYS['quit']):
