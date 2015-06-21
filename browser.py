@@ -52,19 +52,21 @@ class Browser(object):
         self.contents = contents
 
         # element selection index.
-        self.selectIndex = 0
+        self.selectIndex = 1
+
+        # start slice of contents
+        self.sliceIndex = 0
 
         #### TEMPORARY ####
         self._update_dims_()
 
         # Minimum index to be selected
-        self.minSelectIndex = 0
+        self.minSelectIndex = 1
 
-        # maximum selection index is constant. It may depend on either the
-        # number of contents or standard screen's y-dimension, and hence
-        # requires to be updated before accessed.
-        # self.maxSelectIndex = 0
+        # Maximum index to be selected
+        self.maxSelectIndex = len(self.contents)
 
+        # render contents
         self._print_elements_()
 
     def _update_dims_(self):
@@ -85,19 +87,44 @@ class Browser(object):
         self._update_dims_()
 
         # height of standard screen.
-        Height = self.dims[0]
+        height = self.dims[0]
 
         # width of standard screen.
-        Width = self.dims[1]
+        width = self.dims[1]
 
-        ## Requires *dirs* and *files* to exist in local scope.
-        for curr_line, item in enumerate(self.contents):
+        # local selection index. Index of elements of screen, not the index of
+        # elements of contents.
+        localIndex = self.selectIndex - self.sliceIndex
+
+        # If local selection is greater than height
+        if localIndex > height:
+
+            # Increase slicing to scroll down
+            self.sliceIndex = self.selectIndex - height
+
+            # Stay at the last element
+            localIndex = height
+
+        # If  local selection is less than 0
+        elif localIndex <= 0:
+
+            # Decrease slicing to scroll up
+            self.sliceIndex = self.selectIndex - 1
+
+            # Stay at the first element
+            localIndex = 1
+
+        # loop through all contents.
+        for curr_line, item in enumerate(self.contents[self.sliceIndex:]):
 
             # Whether to stop rendering lines(due to standard screen limits)
-            if curr_line == Height: break
+            if curr_line == height: break
+
+            # boolean -> whether to select current item.
+            selectCurrent = (curr_line == localIndex - 1)
 
             # Prepare current elements and determine its properties.
-            currElement, properties = prepareLine(item, curr_line == self.selectIndex, Width)
+            currElement, properties = prepareLine(item, selectCurrent, width)
 
             # Render currElement
             self.stdscr.addstr(curr_line, 0, currElement, properties)
@@ -110,8 +137,11 @@ class Browser(object):
         # change contents list
         self.contents = contents
 
+        # Change maximum select index
+        self.maxSelectIndex = len(self.contents)
+
         # Restore to defaults.
-        self.selectIndex = 0        
+        self.selectIndex = 1
 
         # renders it
         self._print_elements_()
@@ -127,7 +157,7 @@ class Browser(object):
 
         """Return selected content"""
 
-        return self.contents[self.selectIndex]
+        return self.contents[self.selectIndex - 1]
 
     def Move(self, moveSteps):
 
@@ -135,12 +165,6 @@ class Browser(object):
         (+)ve `moveSteps` moves selection forward.
         (-)ve `moveSteps` moves selection backward.
         """
-
-        # Ensure updated screen dimensions details.
-        self._update_dims_()
-
-        # maximum select index = Height of standard screen.
-        self.maxSelectIndex = min(self.dims[0] - 1, len(self.contents) - 1)
 
         # boolean expression to determine whether to move `selectIndex`
         should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
