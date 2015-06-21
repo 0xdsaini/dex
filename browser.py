@@ -118,7 +118,8 @@ class Browser(object):
         for curr_line, item in enumerate(self.contents[self.sliceIndex:]):
 
             # Whether to stop rendering lines(due to standard screen limits)
-            if curr_line == height: break
+            if curr_line == height:
+                break
 
             # boolean -> whether to select current item.
             selectCurrent = (curr_line == localIndex - 1)
@@ -168,7 +169,7 @@ class Browser(object):
 
         # boolean expression to determine whether to move `selectIndex`
         should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
-                    self.maxSelectIndex >= self.selectIndex + moveSteps
+            self.maxSelectIndex >= self.selectIndex + moveSteps
 
         if should_move:
 
