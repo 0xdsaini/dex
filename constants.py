@@ -12,13 +12,13 @@ ELEMENT_PROPERTIES = {"dir": ((False, 3), (True, 4)), "file": ((False, 1), (True
 ELEMENT_PREFIX = {"dir": '+ ', "file": '  '}
 
 # filetypes to be considered as directories
-DIRS = ['mountpoint', 'dir']
+DIRS = ('mountpoint', 'dir')
 
 # filetypes to be considered as files.
-FILES = ['file', 'link', 'other']
+FILES = ('file', 'link', 'other')
 
 # printing preference of different filetypes.
-PRINT_ORDER = ['dir', 'file']
+PRINT_ORDER = ('dir', 'file')
 
 # determines how contents will be sorted.
 CONTENTS_SORTFUNC = lambda x: x.lower()
