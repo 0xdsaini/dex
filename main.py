@@ -100,11 +100,11 @@ def main(stdscr):
     # default keyboard input
     stdscr_key = None
 
-    # Path tracker : track every navigation from path to path
-    pathHistory = [abspath('/')]
+    # Manage paths
+    paths = Paths('/bin')
 
     # Get all contents
-    contentsAll = getContents(pathHistory[-1])
+    contentsAll = getContents(paths.getHistory())
 
     ### TEMPORARY ###
     browser = Browser(stdscr, contentsAll)
@@ -125,12 +125,12 @@ def main(stdscr):
             if selected_content.type == 'dir':
 
                 # Gets new path
-                newPath = join(abspath(pathHistory[-1]), selected_content.name)
+                newPath = paths.chPath(selected_content.name)
 
                 # Get new list of Contents
                 contentsAll = getContents(newPath)
 
-                # Set new contents
+                # Set to browse new list of contents
                 browser.setContents(contentsAll)
 
                 # Append new path to pathHistory
