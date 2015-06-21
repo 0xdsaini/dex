@@ -1,8 +1,8 @@
 
 """Configures curses module, defines other configurations and functions"""
 
-from constants import * # all constant configurations
-from colorpairs import * # all color pairs
+from constants import *  # all constant configurations
+from colorpairs import *  # all color pairs
 
 # Set up bold variable,
 # BOLD[False] -> curses.A_NORMAL, BOLD[True] -> curses.A_BOLD

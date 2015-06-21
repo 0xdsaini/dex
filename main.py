@@ -8,9 +8,11 @@ def getContents(path):
     dirContents = tools.lsdir(path, True)
 
     # contains those dirs whose filetype is considered as 'dir' by DIRS
-    dirs = [Content(fname, 'dir') for _type in DIRS for fname in dirContents[_type]]
+    dirs = [Content(fname, 'dir') for _type in DIRS
+            for fname in dirContents[_type]]
     # contains those files whose filetype is considered as 'file' by FILES
-    files = [Content(fname, 'file') for _type in FILES for fname in dirContents[_type]]
+    files = [Content(fname, 'file') for _type in FILES
+             for fname in dirContents[_type]]
 
     # Single list containing dirs and files classes combined.
     contentsAll = []

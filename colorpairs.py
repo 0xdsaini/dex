@@ -8,7 +8,6 @@ try:
     # Start using curses colors
     curses.start_color()
 
-
     """Make following fg(foreground) bg(background) color pairs"""
 
     ## Color Pairs Specially For Files

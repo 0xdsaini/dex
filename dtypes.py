@@ -1,6 +1,6 @@
 """Contains all useful types and classes"""
 
-from constants import ELEMENT_PREFIX # import ELEMENT_PREFIX constant
+from constants import ELEMENT_PREFIX  # import ELEMENT_PREFIX constant
 
 
 class Content(object):

@@ -68,8 +68,8 @@ class listLocals(object):
 
     def lsdir(self, path=None):
 
-        """Return a Dict containing items in given `path` as key:value pairs where
-        keys are : "dir", "file", "link", "mountpoint" and "other".
+        """Return a Dict containing items in given `path` as key:value pairs
+        where keys are : "dir", "file", "link", "mountpoint" and "other".
 
         And each key corresponds to a list of files with same file type and
         "other" contains a list of unsupported file types.

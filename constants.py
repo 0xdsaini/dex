@@ -1,13 +1,14 @@
 """Defines constant variables"""
 
-from curses import KEY_UP, KEY_DOWN, KEY_BACKSPACE # imports action keys
+from curses import KEY_UP, KEY_DOWN, KEY_BACKSPACE  # imports action keys
 
 # alias of each supported *action key*
 KEYS = {"quit": "q", "enter": '\n', "up": KEY_UP, "down": KEY_DOWN,
         "back": KEY_BACKSPACE}
 
 # properties of files and directories when normal and when selected.
-ELEMENT_PROPERTIES = {"dir": ((False, 3), (True, 4)), "file": ((False, 1), (True, 2))}
+ELEMENT_PROPERTIES = {"dir": ((False, 3), (True, 4)),
+                      "file": ((False, 1), (True, 2))}
 
 # Element line prefixes(placeholders)
 ELEMENT_PREFIX = {"dir": '+ ', "file": '  '}
