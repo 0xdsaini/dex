@@ -116,6 +116,13 @@ class Browser(object):
         # renders it
         self._print_elements_()
 
+    def getContents(self):
+
+        """Return contents' list"""
+
+        # Return contents
+        return self.contents
+
     def getSelected(self):
 
         """Return selected content"""
