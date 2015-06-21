@@ -31,6 +31,65 @@ def getContents(path):
     return contentsAll
 
 
+class Paths(object):
+
+    """Paths manager"""
+
+    def __init__(self, startPath):
+
+        """Start with `startPath` as current path"""
+
+        # Initialize path history with startPath
+        self.pathHistory = [abspath(startPath)]
+
+    def chPath(self, newPath):
+
+        """Change the current path to newPath and return it"""
+
+        # Last path
+        lastPath = self.pathHistory[-1]
+
+        # Append new absolute path to path history.
+        self.pathHistory.append(join(abspath(lastPath), newPath))
+
+        # Return the most recent path(the current path)
+        return self.getHistory()
+
+    def getHistory(self, history_depth=0):
+
+        """Return the path from path history
+
+        --Parameters--
+
+        history_depth(int)(default=0):
+
+          Range - [0, x] (x is no. of paths in the history)
+          min value means *most recent path*
+          max value means *oldest path*
+        """
+
+        return self.pathHistory[-(history_depth + 1)]
+
+    def popHistory(self, history_depth=0):
+
+        """Pop(remove & return) path from path history
+
+        --Parameters--
+
+        history_depth(int)(default=0):
+
+          Range - [0, x] (x is no. of paths in the history)
+          min value means *most recent path*
+          max value means *oldest path*
+        """
+
+        # Remove every path after history_depth
+        self.pathHistory = self.pathHistory[:-history_depth]
+
+        # Return the required path
+        return self.pathHistory[-1]
+
+
 def main(stdscr):
 
     """Contains curses main loop"""
