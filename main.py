@@ -133,8 +133,23 @@ def main(stdscr):
                 # Set to browse new list of contents
                 browser.setContents(contentsAll)
 
-                # Append new path to pathHistory
-                pathHistory.append(newPath)
+        elif stdscr_key == KEYS['back']:
+
+            # Get contents' list.
+            contents = browser.getContents()
+
+            # If parent path in contents
+            if SPECIAL_DIRS['BACK_DIR'] in [content.name
+                                            for content in contents]:
+
+                # Switch to parent path
+                newPath = paths.chPath(SPECIAL_DIRS['BACK_DIR'])
+
+                # Get new list of Contents
+                contentsAll = getContents(newPath)
+
+                # Set to browse new list of contents
+                browser.setContents(contentsAll)
 
         # Arrow Up key pressed
         elif stdscr_key == KEYS['up']:
