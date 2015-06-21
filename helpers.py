@@ -14,7 +14,7 @@ def prepareLine(Item, select, Width):
     """
 
     # Spaces followed by filename i.e. Item
-    tail = (Width - len(Item.name) - len(Item.linePrefix) - 1 ) * " "
+    tail = (Width - (len(Item.linePrefix) + len(Item.name)) - 1) * " "
 
     # Prepares line
     currElement = "%s%s%s" % (Item.linePrefix, Item.name, tail)
