@@ -1,6 +1,6 @@
 
-from constants import * # import all constants
-from config import curses, BOLD # import configured curses and other configs
+from constants import *  # import all constants
+from config import curses, BOLD  # import configured curses and other configs
 
 
 def prepareLine(Item, select, Width):
@@ -33,4 +33,5 @@ def sortContents(dirContents):
     """Sorts directory contents of types returned by tools.lsdir() function"""
 
     # returns
-    return {key: sorted(dirContents[key], key=CONTENTS_SORTFUNC) for key in dirContents}
+    return {key: sorted(dirContents[key], key=CONTENTS_SORTFUNC)
+            for key in dirContents}
