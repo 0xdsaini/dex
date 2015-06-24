@@ -2,6 +2,8 @@
 
 from helpers import prepareLine
 
+from itertools import islice
+
 
 class Browser(object):
 
@@ -114,12 +116,12 @@ class Browser(object):
             # Stay at the first element
             localIndex = 1
 
-        # loop through all contents.
-        for curr_line, item in enumerate(self.contents[self.sliceIndex:]):
+        # Generator object of on-screen contents.
+        onscreen_contents = islice(self.contents, self.sliceIndex,
+                                   self.sliceIndex + height)
 
-            # Whether to stop rendering lines(due to standard screen limits)
-            if curr_line == height:
-                break
+        # loop through all contents.
+        for curr_line, item in enumerate(onscreen_contents):
 
             # boolean -> whether to select current item.
             selectCurrent = (curr_line == localIndex - 1)
