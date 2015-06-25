@@ -53,20 +53,20 @@ class Browser(object):
         # list containing Content-objects. To be printed on screen.
         self.contents = contents
 
-        # element selection index.
-        self.selectIndex = 1
-
-        # start slice of contents
-        self.sliceIndex = 0
-
-        #### TEMPORARY ####
-        self._update_dims_()
-
         # Minimum index to be selected
         self.minSelectIndex = 1
 
         # Maximum index to be selected
         self.maxSelectIndex = len(self.contents)
+
+        # element selection index.
+        self.selectIndex = 1
+
+        # start slice of contents
+        self.scrollIndex = 0
+
+        # Define screen dimensions(y, x)
+        self._update_dims_()
 
         # render contents
         self._print_elements_()
@@ -96,13 +96,13 @@ class Browser(object):
 
         # local selection index. Index of elements of screen, not the index of
         # elements of contents.
-        localIndex = self.selectIndex - self.sliceIndex
+        localIndex = self.selectIndex - self.scrollIndex
 
         # If local selection is greater than height
         if localIndex > height:
 
             # Increase slicing to scroll down
-            self.sliceIndex = self.selectIndex - height
+            self.scrollIndex = self.selectIndex - height
 
             # Stay at the last element
             localIndex = height
@@ -111,14 +111,14 @@ class Browser(object):
         elif localIndex <= 0:
 
             # Decrease slicing to scroll up
-            self.sliceIndex = self.selectIndex - 1
+            self.scrollIndex = self.selectIndex - 1
 
             # Stay at the first element
             localIndex = 1
 
         # Generator object of on-screen contents.
-        onscreen_contents = islice(self.contents, self.sliceIndex,
-                                   self.sliceIndex + height)
+        onscreen_contents = islice(self.contents, self.scrollIndex,
+                                   self.scrollIndex + height)
 
         # loop through all contents.
         for curr_line, item in enumerate(onscreen_contents):
