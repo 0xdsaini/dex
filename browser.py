@@ -171,7 +171,7 @@ class Browser(object):
 
         # boolean expression to determine whether to move `selectIndex`
         should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
-            self.maxSelectIndex >= self.selectIndex + moveSteps
+            self.selectIndex + moveSteps <= self.maxSelectIndex
 
         if should_move:
 
@@ -179,4 +179,13 @@ class Browser(object):
             self.selectIndex += moveSteps
 
         # print elements.
+        self._print_elements_()
+
+    def Jump(self, jumpIndex):
+
+        """Jump and select a content at given index."""
+
+        if self.minSelectIndex <= jumpIndex <= self.maxSelectIndex:
+            self.selectIndex = jumpIndex
+
         self._print_elements_()

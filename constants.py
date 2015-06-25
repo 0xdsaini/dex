@@ -1,10 +1,11 @@
 """Defines constant variables"""
 
-from curses import KEY_UP, KEY_DOWN, KEY_BACKSPACE  # imports action keys
+# imports action keys
+from curses import KEY_UP, KEY_DOWN, KEY_BACKSPACE, KEY_HOME, KEY_END
 
 # alias of each supported *action key*
 KEYS = {"quit": "q", "enter": '\n', "up": KEY_UP, "down": KEY_DOWN,
-        "back": KEY_BACKSPACE}
+        "back": KEY_BACKSPACE, "home": KEY_HOME, "end": KEY_END}
 
 # properties of files and directories when normal and when selected.
 ELEMENT_PROPERTIES = {"dir": ((False, 3), (True, 4)),

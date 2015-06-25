@@ -103,12 +103,12 @@ def main(stdscr):
     stdscr_key = None
 
     # Manage paths
-    paths = Paths('/bin')
+    paths = Paths('.')
 
     # Get all contents
     contentsAll = getContents(paths.getHistory())
 
-    ### TEMPORARY ###
+    # Instantiate Browser-class
     browser = Browser(stdscr, contentsAll)
 
     # Main loop. Quits when keyboard input is 'q'
@@ -153,13 +153,33 @@ def main(stdscr):
                 # Set to browse new list of contents
                 browser.setContents(contentsAll)
 
+        # Home key pressed
+        elif stdscr_key == KEYS['home']:
+
+            # Determine the index of first selectable element.
+            first_element = browser.minSelectIndex
+
+            # Jump to select the first selectable element
+            browser.Jump(first_element)
+
+        # End key pressed
+        elif stdscr_key == KEYS['end']:
+
+            # Determine the index of last selectable element.
+            last_element = browser.maxSelectIndex
+
+            # Jump to select the last selectable element
+            browser.Jump(last_element)
+
         # Arrow Up key pressed
         elif stdscr_key == KEYS['up']:
+
             # Move selection to previous element
             browser.Move(-1)
 
         # Arrow Down key pressed
         elif stdscr_key == KEYS['down']:
+
             # Move selection to next element.
             browser.Move(1)
 
