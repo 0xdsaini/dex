@@ -199,7 +199,11 @@ class Browser(object):
 
         """Jump and select a content at given index."""
 
+        # If jumpIndex lies within limits inclusively...
         if self.minSelectIndex <= jumpIndex <= self.maxSelectIndex:
+
+            # jump to select jumpIndex.
             self.selectIndex = jumpIndex
 
+        # print elements.
         self._print_elements_()
