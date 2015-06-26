@@ -181,12 +181,16 @@ class Browser(object):
         """Move selection by `moveSteps`.
         (+)ve `moveSteps` moves selection forward.
         (-)ve `moveSteps` moves selection backward.
+
+        If moved succesfully, return True, else, False.
         """
 
-        # boolean expression to determine whether to move `selectIndex`
+        # boolean expression to determine : "will the resulting selectIndex lie
+        # within limits(inclusively)"?
         should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
             self.selectIndex + moveSteps <= self.maxSelectIndex
 
+        # Should I move?
         if should_move:
 
             # move by moveSteps
