@@ -14,37 +14,51 @@ class Browser(object):
         """Takes curses `screen` to be used for rendering and, a list of
         Contents(of Content-type) to be rendered and browsed.
 
-        1) Each Content in `contents` member have a index associated
-           with it.
+        01) Each Content in `contents` member have a index associated
+            with it.
 
-        2) selectIndex member keeps track of whether a specific content is
-           selected by storing its index in itself.
+        02) selectIndex member keeps track of whether a specific content is
+            selected by storing its index in itself.
 
-        3) minSelectIndex member is the lower limit of `selectIndex` member
-           i.e. It limits `selectIndex` to be no less than it(minSelectIndex)
-           if co-operated by Move() method.
+        03) `minSelectIndex` and `maxSelectIndex` members are the lower and
+            upper limits of `selectIndex` member respectively.
 
-        4) _update_dims_() method gets the most recent screen dimensions(y, x)
-           and updates `dims` member whenever it is called.
+            i.e. They limits the selectIndex to be no less and no more than
+            `minSelectIndex` and `maxSelectIndex` respectively.
 
-        4) _print_elements_() method renders each content of `contents` on the
-           screen(provided at the time of initialization) in the same order as
-           provided in the list stopping rendering as soon as it hits the
-           bottom of screen.
+        04) _update_dims_() method gets the most recent screen dimensions(y, x)
+            and updates `dims` member whenever it is called.
 
-           4.1) Before rendering, each content gets prepared(to be rendered)
+        05) _print_elements_() method prepares an iterator called
+            `onscreen_contents`(sliced from original `contents` list to contain
+            exactly the number of contents as the screen size) whose contents
+            are to be rendered on screen in the exact same order.
+
+           5.1) `scrollIndex` slices the original member list,
+                `contents` to provide a facility to scroll up & scroll down if
+                `selectIndex` exceeds the vertical screen limit(y-coordinate).
+
+           5.2) Before rendering, each content gets prepared(to be rendered)
                 and gets it properties(color properties etc.) from prepareLine
                 function(from helpers module).
 
-        5) Move() method defines the `maxSelectIndex`(upper limit of
-           `selectIndex`) and moves the `selectIndex` pointer by `moveSteps` if
-           the resulting selectIndex lies somewhere between `minSelectIndex`
-           and `maxSelectIndex`(both inclusive).
+        06) setContents() method changes(sets) the contents' list to a new
+            list(provided as an argument), redetermines the `maxSelectIndex` and
+            sets selectIndex to its default value.
 
-           5.1) With contrary to `minSelectIndex`, `maxSelectIndex` is not a
-                constant, it depends on multiple things which may require to be
-                updated each time before being accessed.
+        07) getContents() method returns the current contents' list to the
+            caller.
 
+        08) getSelected() method returns the selected content to the caller.
+
+        09) Move() method moves the `selectIndex` pointer by `moveSteps` if
+            the resulting selectIndex lies somewhere between `minSelectIndex`
+            and `maxSelectIndex`(both inclusive).
+
+        10) Jump() method jumps and select a content at the
+            provided(as an argument) index on screen if it is
+            selectable(lies between minSelectIndex and maxSelectIndex, both
+            inclusive).
         """
 
         # Standard screen
