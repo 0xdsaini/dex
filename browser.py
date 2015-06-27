@@ -199,12 +199,20 @@ class Browser(object):
         # print elements.
         self._print_elements_()
 
+        # return
+        return should_move
+
     def Jump(self, jumpIndex):
 
-        """Jump and select a content at given index."""
+        """Jump and select a content at given index.
+        If jumped succesfully, return True, else, False."""
 
-        # If jumpIndex lies within limits inclusively...
-        if self.minSelectIndex <= jumpIndex <= self.maxSelectIndex:
+        # boolean experssion to determine : "whether the jumpIndex lies within
+        # limits(inclusively)"?
+        should_jump = self.minSelectIndex <= jumpIndex <= self.maxSelectIndex
+
+        # Should I jump?
+        if should_jump:
 
             # jump to select jumpIndex.
             self.selectIndex = jumpIndex
