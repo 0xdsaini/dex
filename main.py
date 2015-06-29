@@ -1,3 +1,6 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
+
 from curses import initscr, wrapper
 
 

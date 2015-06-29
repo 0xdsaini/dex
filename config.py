@@ -1,3 +1,5 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
 
 """Configures curses module, defines other configurations and functions"""
 

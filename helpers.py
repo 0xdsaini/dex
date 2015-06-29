@@ -1,3 +1,5 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
 
 from constants import *  # import all constants
 from config import curses, BOLD  # import configured curses and other configs

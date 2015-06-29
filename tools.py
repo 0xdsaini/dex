@@ -1,3 +1,6 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
+
 from os.path import isdir, isfile, islink, ismount
 from os.path import join
 from os import listdir
