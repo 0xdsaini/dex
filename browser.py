@@ -1,6 +1,11 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
+
 """Contains Browser class"""
 
 from helpers import prepareLine
+
+from itertools import islice
 
 
 class Browser(object):
@@ -12,37 +17,51 @@ class Browser(object):
         """Takes curses `screen` to be used for rendering and, a list of
         Contents(of Content-type) to be rendered and browsed.
 
-        1) Each Content in `contents` member have a index associated
-           with it.
+        01) Each Content in `contents` member have a index associated
+            with it.
 
-        2) selectIndex member keeps track of whether a specific content is
-           selected by storing its index in itself.
+        02) selectIndex member keeps track of whether a specific content is
+            selected by storing its index in itself.
 
-        3) minSelectIndex member is the lower limit of `selectIndex` member
-           i.e. It limits `selectIndex` to be no less than it(minSelectIndex)
-           if co-operated by Move() method.
+        03) `minSelectIndex` and `maxSelectIndex` members are the lower and
+            upper limits of `selectIndex` member respectively.
 
-        4) _update_dims_() method gets the most recent screen dimensions(y, x)
-           and updates `dims` member whenever it is called.
+            i.e. They limits the selectIndex to be no less and no more than
+            `minSelectIndex` and `maxSelectIndex` respectively.
 
-        4) _print_elements_() method renders each content of `contents` on the
-           screen(provided at the time of initialization) in the same order as
-           provided in the list stopping rendering as soon as it hits the
-           bottom of screen.
+        04) _update_dims_() method gets the most recent screen dimensions(y, x)
+            and updates `dims` member whenever it is called.
 
-           4.1) Before rendering, each content gets prepared(to be rendered)
+        05) _print_elements_() method prepares an iterator called
+            `onscreen_contents`(sliced from original `contents` list to contain
+            exactly the number of contents as the screen size) whose contents
+            are to be rendered on screen in the exact same order.
+
+           5.1) `scrollIndex` slices the original member list,
+                `contents` to provide a facility to scroll up & scroll down if
+                `selectIndex` exceeds the vertical screen limit(y-coordinate).
+
+           5.2) Before rendering, each content gets prepared(to be rendered)
                 and gets it properties(color properties etc.) from prepareLine
                 function(from helpers module).
 
-        5) Move() method defines the `maxSelectIndex`(upper limit of
-           `selectIndex`) and moves the `selectIndex` pointer by `moveSteps` if
-           the resulting selectIndex lies somewhere between `minSelectIndex`
-           and `maxSelectIndex`(both inclusive).
+        06) setContents() method changes(sets) the contents' list to a new
+            list(provided as an argument), redetermines the `maxSelectIndex` and
+            sets selectIndex to its default value.
 
-           5.1) With contrary to `minSelectIndex`, `maxSelectIndex` is not a
-                constant, it depends on multiple things which may require to be
-                updated each time before being accessed.
+        07) getContents() method returns the current contents' list to the
+            caller.
 
+        08) getSelected() method returns the selected content to the caller.
+
+        09) Move() method moves the `selectIndex` pointer by `moveSteps` if
+            the resulting selectIndex lies somewhere between `minSelectIndex`
+            and `maxSelectIndex`(both inclusive).
+
+        10) Jump() method jumps and select a content at the
+            provided(as an argument) index on screen if it is
+            selectable(lies between minSelectIndex and maxSelectIndex, both
+            inclusive).
         """
 
         # Standard screen
@@ -51,20 +70,22 @@ class Browser(object):
         # list containing Content-objects. To be printed on screen.
         self.contents = contents
 
-        # element selection index.
-        self.selectIndex = 0
+        # Minimum index to be selected
+        self.minSelectIndex = 1
 
-        #### TEMPORARY ####
+        # Maximum index to be selected
+        self.maxSelectIndex = len(self.contents)
+
+        # element selection index.
+        self.selectIndex = 1
+
+        # start slice of contents
+        self.scrollIndex = 0
+
+        # Define screen dimensions(y, x)
         self._update_dims_()
 
-        # Minimum index to be selected
-        self.minSelectIndex = 0
-
-        # maximum selection index is constant. It may depend on either the
-        # number of contents or standard screen's y-dimension, and hence
-        # requires to be updated before accessed.
-        # self.maxSelectIndex = 0
-
+        # render contents
         self._print_elements_()
 
     def _update_dims_(self):
@@ -85,44 +106,119 @@ class Browser(object):
         self._update_dims_()
 
         # height of standard screen.
-        Height = self.dims[0]
+        height = self.dims[0]
 
         # width of standard screen.
-        Width = self.dims[1]
+        width = self.dims[1]
 
-        ## Requires *dirs* and *files* to exist in local scope.
-        for curr_line, item in enumerate(self.contents):
+        # local selection index. Index of elements of screen, not the index of
+        # elements of contents.
+        localIndex = self.selectIndex - self.scrollIndex
 
-            # Whether to stop rendering lines(due to standard screen limits)
-            if curr_line == Height: break
+        # If local selection is greater than height
+        if localIndex > height:
+
+            # Increase slicing to scroll down
+            self.scrollIndex = self.selectIndex - height
+
+            # Stay at the last element
+            localIndex = height
+
+        # If  local selection is less than 0
+        elif localIndex <= 0:
+
+            # Decrease slicing to scroll up
+            self.scrollIndex = self.selectIndex - 1
+
+            # Stay at the first element
+            localIndex = 1
+
+        # Generator object of on-screen contents.
+        onscreen_contents = islice(self.contents, self.scrollIndex,
+                                   self.scrollIndex + height)
+
+        # loop through all contents.
+        for curr_line, item in enumerate(onscreen_contents):
+
+            # boolean -> whether to select current item.
+            selectCurrent = (curr_line == localIndex - 1)
 
             # Prepare current elements and determine its properties.
-            currElement, properties = prepareLine(item, curr_line == self.selectIndex, Width)
+            currElement, properties = prepareLine(item, selectCurrent, width)
 
             # Render currElement
             self.stdscr.addstr(curr_line, 0, currElement, properties)
+
+    def setContents(self, contents):
+
+        """set contents' list.
+        Primarily developed to change contents' list"""
+
+        # change contents list
+        self.contents = contents
+
+        # Change maximum select index
+        self.maxSelectIndex = len(self.contents)
+
+        # Restore to defaults.
+        self.selectIndex = 1
+
+        # renders it
+        self._print_elements_()
+
+    def getContents(self):
+
+        """Return contents' list"""
+
+        # Return contents
+        return self.contents
+
+    def getSelected(self):
+
+        """Return selected content"""
+
+        return self.contents[self.selectIndex - 1]
 
     def Move(self, moveSteps):
 
         """Move selection by `moveSteps`.
         (+)ve `moveSteps` moves selection forward.
         (-)ve `moveSteps` moves selection backward.
+
+        If moved succesfully, return True, else, False.
         """
 
-        # Ensure updated screen dimensions details.
-        self._update_dims_()
-
-        # maximum select index = Height of standard screen.
-        self.maxSelectIndex = min(self.dims[0] - 1, len(self.contents) - 1)
-
-        # boolean expression to determine whether to move `selectIndex`
+        # boolean expression to determine : "will the resulting selectIndex lie
+        # within limits(inclusively)"?
         should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
-                    self.maxSelectIndex >= self.selectIndex + moveSteps
+            self.selectIndex + moveSteps <= self.maxSelectIndex
 
+        # Should I move?
         if should_move:
 
             # move by moveSteps
             self.selectIndex += moveSteps
+
+        # print elements.
+        self._print_elements_()
+
+        # return
+        return should_move
+
+    def Jump(self, jumpIndex):
+
+        """Jump and select a content at given index.
+        If jumped succesfully, return True, else, False."""
+
+        # boolean experssion to determine : "whether the jumpIndex lies within
+        # limits(inclusively)"?
+        should_jump = self.minSelectIndex <= jumpIndex <= self.maxSelectIndex
+
+        # Should I jump?
+        if should_jump:
+
+            # jump to select jumpIndex.
+            self.selectIndex = jumpIndex
 
         # print elements.
         self._print_elements_()

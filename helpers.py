@@ -1,6 +1,8 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
 
-from constants import * # import all constants
-from config import curses, BOLD # import configured curses and other configs
+from constants import *  # import all constants
+from config import curses, BOLD  # import configured curses and other configs
 
 
 def prepareLine(Item, select, Width):
@@ -14,7 +16,7 @@ def prepareLine(Item, select, Width):
     """
 
     # Spaces followed by filename i.e. Item
-    tail = (Width - len(Item.name) - len(Item.linePrefix) - 1 ) * " "
+    tail = (Width - (len(Item.linePrefix) + len(Item.name)) - 1) * " "
 
     # Prepares line
     currElement = "%s%s%s" % (Item.linePrefix, Item.name, tail)
@@ -33,4 +35,5 @@ def sortContents(dirContents):
     """Sorts directory contents of types returned by tools.lsdir() function"""
 
     # returns
-    return {key: sorted(dirContents[key], key=CONTENTS_SORTFUNC) for key in dirContents}
+    return {key: sorted(dirContents[key], key=CONTENTS_SORTFUNC)
+            for key in dirContents}

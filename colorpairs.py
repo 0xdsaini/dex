@@ -1,3 +1,6 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
+
 """module defines curses color pairs to be used by the importer program"""
 
 import curses
@@ -7,7 +10,6 @@ try:
 
     # Start using curses colors
     curses.start_color()
-
 
     """Make following fg(foreground) bg(background) color pairs"""
 

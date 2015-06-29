@@ -1,3 +1,6 @@
+# Copyright (c) 2015 ICRL
+# See the file LICENSE for copying permission.
+
 from os.path import isdir, isfile, islink, ismount
 from os.path import join
 from os import listdir
@@ -68,8 +71,8 @@ class listLocals(object):
 
     def lsdir(self, path=None):
 
-        """Return a Dict containing items in given `path` as key:value pairs where
-        keys are : "dir", "file", "link", "mountpoint" and "other".
+        """Return a Dict containing items in given `path` as key:value pairs
+        where keys are : "dir", "file", "link", "mountpoint" and "other".
 
         And each key corresponds to a list of files with same file type and
         "other" contains a list of unsupported file types.
@@ -83,7 +86,7 @@ class listLocals(object):
         return self.split_file_types(listdir(self.path))
 
 
-def lsdir(path):
+def lsdir(path, extraPaths=False):
 
     """Instantiate listLocals to return contents of a directory(at location
     `path` as a dictionary) in a organized fashion.
@@ -91,4 +94,9 @@ def lsdir(path):
     See docstring -> listLocals.lsdir method for more on return value.
     """
 
-    return listLocals(path).lsdir()
+    contents = listLocals(path).lsdir()
+
+    if extraPaths:
+        contents['dir'].extend(['.', '..'])
+
+    return contents
