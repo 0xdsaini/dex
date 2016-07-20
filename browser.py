@@ -82,9 +82,6 @@ class Browser(object):
         # start slice of contents
         self.scrollIndex = 0
 
-        # Define screen dimensions(y, x)
-        self._update_dims_()
-
         # render contents
         self._print_elements_()
 
