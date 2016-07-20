@@ -46,8 +46,8 @@ class Browser(object):
                 function(from helpers module).
 
         06) setContents() method changes(sets) the contents' list to a new
-            list(provided as an argument), redetermines the `maxSelectIndex` and
-            sets selectIndex to its default value.
+            list(provided as an argument), redetermines the `maxSelectIndex`
+            and sets selectIndex to its default value.
 
         07) getContents() method returns the current contents' list to the
             caller.
