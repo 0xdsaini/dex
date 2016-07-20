@@ -12,7 +12,7 @@ TYPES = {isfile: "file", isdir: "dir", islink: "link", ismount: "mountpoint"}
 
 class listLocals(object):
 
-    """Class to list contents of directory in a organized fashion.
+    """Class to list contents of directory in an organized fashion.
     """
 
     def __init__(self, path):
