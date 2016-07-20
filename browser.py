@@ -219,3 +219,6 @@ class Browser(object):
 
         # print elements.
         self._print_elements_()
+
+        # return whether jumped or not?
+        return should_jump
