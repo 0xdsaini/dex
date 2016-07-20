@@ -211,3 +211,74 @@ class Browser(object):
 
         # return whether jumped or not?
         return should_jump
+
+    def bulkMove(self, bulkFactor):
+
+        """Moves selection in bulk, bulkFactor times a time
+
+        Rules :
+
+        1) If bulkFactor is positive, it will move selection to one of these,
+           whichever is minimum -
+             a) to the last element of current screen
+             b) to the last element of all contents.
+             c) moves down by bulkFactor steps
+
+        2) If bulkFactor is negative, it will move selection to one of these,
+           whichever is minimum -
+             a) to the first element of current screen
+             b) to the first element of all contents
+             c) moves up by bulkFactor steps
+
+        """
+
+        # Height of screen
+        height = self.dims[0]
+
+        # Separate direction from bulkFactor for simple calculations.
+        direction = bulkFactor/abs(bulkFactor)
+
+        # removing direction and conserving magnitude from bulkFactor.
+        bulkFactor = abs(bulkFactor)
+
+        # local selection index. Index of elements of screen, not the index of
+        # elements of contents.
+        localIndex = self.selectIndex - self.scrollIndex
+
+        # Moving up
+        if direction > 0:
+
+            # Available contents on the screen(screen may contain the number of
+            # contents as the height or lesser than it, it chooses min of them)
+            avail_contents = min(height, self.maxSelectIndex)
+
+            # steps to move to the last element of current screen or bulkFactor
+            # steps, whichever is minimum.
+            moveSteps = min(avail_contents - localIndex, bulkFactor)
+
+            # If moveSteps is 0(i.e. selection is at the last element)
+            if moveSteps is 0:
+
+                # steps to reach last element of all contents or bulkFactor
+                # steps, whichever is minimum.
+                moveSteps = min(bulkFactor,
+                                self.maxSelectIndex - self.selectIndex)
+
+        # Moving down
+        elif direction < 0:
+
+            # steps to reach first element or bulkFactor steps, minimum of them
+            moveSteps = min(bulkFactor, localIndex - 1)
+
+            # If localIndex is 1(i.e. If selection is at the first element)
+            if localIndex is 1:
+
+                # steps to reach the first element of contentsAll list, or
+                # bulkFactor steps, whichever is minimum.
+                moveSteps = min(bulkFactor, self.scrollIndex)
+
+        # include direction
+        moveSteps *= direction
+
+        # Now, move
+        self.Move(moveSteps)
