@@ -185,22 +185,11 @@ class Browser(object):
         If moved succesfully, return True, else, False.
         """
 
-        # boolean expression to determine : "will the resulting selectIndex lie
-        # within limits(inclusively)"?
-        should_move = self.minSelectIndex <= self.selectIndex + moveSteps and\
-            self.selectIndex + moveSteps <= self.maxSelectIndex
-
-        # Should I move?
-        if should_move:
-
-            # move by moveSteps
-            self.selectIndex += moveSteps
-
-        # print elements.
-        self._print_elements_()
+        # Determine the index on which we have to jump.
+        jumpTo = self.selectIndex + moveSteps
 
         # return
-        return should_move
+        return self.Jump(jumpTo)
 
     def Jump(self, jumpIndex):
 
