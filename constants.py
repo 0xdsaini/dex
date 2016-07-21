@@ -5,10 +5,12 @@
 
 # imports action keys
 from curses import KEY_UP, KEY_DOWN, KEY_BACKSPACE, KEY_HOME, KEY_END
+from curses import KEY_PPAGE, KEY_NPAGE
 
 # alias of each supported *action key*
 KEYS = {"quit": "q", "enter": '\n', "up": KEY_UP, "down": KEY_DOWN,
-        "back": KEY_BACKSPACE, "home": KEY_HOME, "end": KEY_END}
+        "back": KEY_BACKSPACE, "home": KEY_HOME, "end": KEY_END,
+        "pageup": KEY_PPAGE, "pagedown": KEY_NPAGE}
 
 # properties of files and directories when normal and when selected.
 ELEMENT_PROPERTIES = {"dir": ((False, 3), (True, 4)),

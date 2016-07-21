@@ -186,6 +186,20 @@ def main(stdscr):
             # Move selection to next element.
             browser.Move(1)
 
+        # Page Down key pressed
+        elif stdscr_key == KEYS['pagedown']:
+            # Page down by height
+            # This may not be the best way. Correct it if it's really not #
+            height = browser.dims[0]
+            browser.bulkMove(height)
+
+        # Page up key pressed
+        elif stdscr_key == KEYS['pageup']:
+            # Page up by height
+            # This may not be the best way. Correct it if it's really not #
+            height = browser.dims[0]
+            browser.bulkMove(-height)
+
         # Wait for 100 ms
         # TODO -> increase to decrease CPU cycles.
         stdscr.timeout(100)
