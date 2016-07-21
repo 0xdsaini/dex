@@ -120,8 +120,20 @@ def main(stdscr):
         # Get input from keyboard.
         stdscr_key = stdscr.getch()
 
+        # Arrow Up key pressed
+        if stdscr_key == KEYS['up']:
+
+            # Move selection to previous element
+            browser.Move(-1)
+
+        # Arrow Down key pressed
+        elif stdscr_key == KEYS['down']:
+
+            # Move selection to next element.
+            browser.Move(1)
+
         # Enter/Return key pressed
-        if stdscr_key == ord(KEYS['enter']):
+        elif stdscr_key == ord(KEYS['enter']):
 
             # Get selected Content from browser
             selected_content = browser.getSelected()
@@ -173,18 +185,6 @@ def main(stdscr):
 
             # Jump to select the last selectable element
             browser.Jump(last_element)
-
-        # Arrow Up key pressed
-        elif stdscr_key == KEYS['up']:
-
-            # Move selection to previous element
-            browser.Move(-1)
-
-        # Arrow Down key pressed
-        elif stdscr_key == KEYS['down']:
-
-            # Move selection to next element.
-            browser.Move(1)
 
         # Page Down key pressed
         elif stdscr_key == KEYS['pagedown']:
