@@ -17,7 +17,7 @@ class Browser(object):
         """Takes curses `screen` to be used for rendering and, a list of
         Contents(of Content-type) to be rendered and browsed.
 
-        01) Each Content in `contents` member have a index associated
+        01) Each Content in `contents` member have an index associated
             with it.
 
         02) selectIndex member keeps track of whether a specific content is
