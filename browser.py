@@ -62,7 +62,11 @@ class Browser(object):
             provided(as an argument) index on screen if it is
             selectable(lies between minSelectIndex and maxSelectIndex, both
             inclusive).
-        """
+
+        11) bulkMove() method moves selection `bulkFactor` times at a time,
+            upward or downward. This is a rough description. It behaves
+            slightly different in some cases. You must read its docstring to
+            know its precise behaviour"""
 
         # Standard screen
         self.stdscr = stdscr
