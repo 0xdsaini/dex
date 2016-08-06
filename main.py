@@ -213,7 +213,7 @@ if __name__ == "__main__":
     # import configured `curses` module and other configurations.
     from config import *
 
-    # import all required modules
+    # import all other required stuff
     from imports import *
 
     # call `main` and wait till it exits.
