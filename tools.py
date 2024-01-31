@@ -60,7 +60,7 @@ class listLocals(object):
         # corresponding list.
         # Supported keys are 'other' and all values from TYPES.
         # each value initialized to empty list i.e. []
-        contentDict = {v: [] for v in TYPES.values() + ['other']}
+        contentDict = {v: [] for v in list(TYPES.values()) + ['other']}
 
         for filename in contentList:
 
